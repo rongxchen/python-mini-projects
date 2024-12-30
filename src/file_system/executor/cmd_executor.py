@@ -1,5 +1,5 @@
 import os
-from src.model.file import Directory, File
+from src.file_system.model.file import Directory, File
 from typing import List
 
 
