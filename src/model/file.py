@@ -1,6 +1,7 @@
 from abc import abstractmethod
 from src.enum.file_type import FileType
 from typing import List
+from datetime import datetime
 
 
 # ===============
@@ -12,6 +13,10 @@ class FileComponent:
         
     @abstractmethod
     def get_type(self):
+        pass
+    
+    @abstractmethod
+    def get_size(self):
         pass
     
     def has_next_level(self):
@@ -52,19 +57,48 @@ class Directory(FileComponent):
                     return
         self.file_components.append(Directory(name))
         
-    def create_file(self, name: str, suffix: str = ""):
-        file = File(name, suffix)
+    def create_file(self, name: str):
+        file = File(name)
         self.file_components.append(file)
+        
+    def get_size(self):
+        return sum([file_component.get_size() for file_component in self.file_components])
     
     
 # =====
 # FILE
 # =====
 class File(FileComponent):
-    def __init__(self, name: str, suffix: str = ""):
+    def __init__(self, name: str):
+        if "." not in name:
+            name, suffix = name, ".txt"
+        else:
+            name, suffix = name.split(".")
         super().__init__(name)
-        self.suffix = suffix
+        self.suffix = "." + suffix
+        self.content = "test content"
+        self.created_at = self.__generate_timestamp()
+        self.updated_at = self.__generate_timestamp()
+        
+    def __generate_timestamp(self):
+        return int(datetime.now().timestamp() * 1000)
+    
+    def __from_timestamp(self, timestamp: int):
+        return datetime.fromtimestamp(timestamp / 1000)
         
     def get_type(self):
         return FileType.FILE
+        
+    def get_size(self):
+        return len(self.content)
+    
+    def get_info(self):
+        info = "=" * 40 + "\n"
+        info += f"Name: {self.name}\n"
+        info += f"File type: {self.suffix}\n"
+        info += f"Size: {self.get_size()} bytes\n"
+        info += f"Created at: {self.__from_timestamp(self.created_at)}\n"
+        info += f"Updated at: {self.__from_timestamp(self.updated_at)}\n"
+        info += "=" * 40 + "\n"
+        return info
         

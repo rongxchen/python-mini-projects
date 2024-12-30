@@ -1,5 +1,5 @@
 import os
-from src.model.file import Directory
+from src.model.file import Directory, File
 from typing import List
 
 
@@ -100,4 +100,15 @@ class CommandLineExecutor:
             self.__execute_touch(command_components)
         elif command == "rm":
             self.__execute_rm(command_components)
-    
+        elif command == "size":
+            print(f"Size of current directory: {self.browse_history[-1].get_size()} bytes")
+        elif command == "info":
+            file_name = command_components[1]
+            file_found = False
+            for file in self.browse_history[-1].file_components:
+                if file.name == file_name and isinstance(file, File):
+                    file_found = True
+                    print(file.get_info())
+                    break
+            if not file_found:
+                print("File not found")
