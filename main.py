@@ -1,4 +1,4 @@
-from src.executor.executor import CommandLineExecutor
+from src.executor.cmd_executor import CommandLineExecutor
 
 
 executor = CommandLineExecutor()

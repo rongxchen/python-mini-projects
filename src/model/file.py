@@ -3,6 +3,9 @@ from src.enum.file_type import FileType
 from typing import List
 
 
+# ===============
+# FILE COMPONENT
+# ===============
 class FileComponent:
     def __init__(self, name: str):
         self.name = name
@@ -20,6 +23,9 @@ class FileComponent:
         return self.name
     
 
+# ==========
+# DIRECTORY
+# ==========
 class Directory(FileComponent):
     def __init__(self, name: str):
         super().__init__(name)
@@ -50,7 +56,10 @@ class Directory(FileComponent):
         file = File(name, suffix)
         self.file_components.append(file)
     
-
+    
+# =====
+# FILE
+# =====
 class File(FileComponent):
     def __init__(self, name: str, suffix: str = ""):
         super().__init__(name)
