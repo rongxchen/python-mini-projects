@@ -1,6 +1,10 @@
 from typing import List
-from src.landlords.enum.enum import Character, Suit
+from src.landlords.enum.enum import Character
 from src.landlords.model.card import Card
+
+
+def pad(s: str, length: int):
+    return " " * (length - len(s)) + s
 
 
 class Player:
@@ -13,10 +17,17 @@ class Player:
         
     def receive_card(self, card: Card):
         self.cards.append(card)
+        
+    
+    def play_cards(self, indexes: List[int]):
+        cards = [self.cards[i] for i in indexes]
+        self.cards = [self.cards[i] for i in range(len(self.cards)) if i not in indexes]
+        return cards
 
 
     def show_cards(self):
-        print(f"{self.name}:\t{self.cards}")
+        _cards = [f'[{pad(self.cards[i].__str__(), 3)}]' for i in range(len(self.cards))]
+        print(f"{pad(self.name, 10)}", *_cards)
 
 
     def count_cards(self):
@@ -24,7 +35,7 @@ class Player:
 
     
     def sort_cards(self):
-        self.cards.sort(key=lambda x: x.get_value())
+        self.cards.sort(key=lambda x : x.get_value())
 
 
 class LandLord(Player):

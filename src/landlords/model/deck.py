@@ -1,14 +1,12 @@
 import random
 from typing import List
 from src.landlords.model.card import Card
-from src.landlords.enum.enum import Suit
+from src.landlords.enum.enum import Suit, Rank, get_card_name
 
 
 class Deck:
     
-    card_value_map = {"3": 3, "4": 4, "5": 5, "6": 6, "7": 7, "8": 8, "9": 9, "10": 10, "J": 11, "Q": 12, "K": 13, "A": 14, "2": 15, "Joker": 16}
-    value_card_map = {3: "3", 4: "4", 5: "5", 6: "6", 7: "7", 8: "8", 9: "9", 10: "10", 11: "J", 12: "Q", 13: "K", 14: "A", 15: "2", 16: "Joker"}
-    
+    value_card_map = {rank.value: get_card_name(rank) for rank in Rank}
     
     def __init__(self):
         self.cards: List[Card] = []
@@ -18,10 +16,10 @@ class Deck:
     
     def __initialize_deck(self):
         for i in range(3, 16):
-            for suit in [_suit for _suit in Suit if _suit not in [Suit.sJoker, Suit.bJoker]]:
+            for suit in [_suit for _suit in Suit if _suit not in [Suit.BLACK_JOKER, Suit.RED_JOKER]]:
                 self.cards.append(Card(self.value_card_map[i], i, suit))
-        self.cards.append(Card("Joker", 18, Suit.bJoker))
-        self.cards.append(Card("Joker", 17, Suit.sJoker))
+        self.cards.append(Card("", Rank.BLACK_JOKER.value, Suit.BLACK_JOKER))
+        self.cards.append(Card("", Rank.RED_JOKER.value, Suit.RED_JOKER))
         
     
     def shuffle(self):
@@ -40,5 +38,3 @@ class Deck:
     def show(self):
         for card in self.cards:
             print(card)
-
-    

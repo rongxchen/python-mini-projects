@@ -8,4 +8,3 @@
 from src.landlords.game import main
 
 main()
-
