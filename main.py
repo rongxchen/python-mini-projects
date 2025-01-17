@@ -5,5 +5,10 @@
 
 
 # landloard
-from src.landlords.game import main
+# from src.landlords.game import main
+# main()
+
+
+# banking system
+from src.banking_system.banking import main
 main()
