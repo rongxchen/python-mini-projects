@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 from src.landlords.enum.enum import Character
 from src.landlords.model.card import Card
 
@@ -15,8 +15,11 @@ class Player:
         self.cards: List[Card] = []
         
         
-    def receive_card(self, card: Card):
-        self.cards.append(card)
+    def receive_card(self, card: Union[Card, List[Card]]):
+        if isinstance(card, list):
+            self.cards.extend(card)
+        else:
+            self.cards.append(card)
         
     
     def play_cards(self, indexes: List[int]):

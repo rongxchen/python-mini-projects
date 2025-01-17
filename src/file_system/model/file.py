@@ -1,5 +1,5 @@
 from abc import abstractmethod
-from src.enum.file_type import FileType
+from src.file_system.enum.file_type import FileType
 from typing import List
 from datetime import datetime
 

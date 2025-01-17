@@ -20,6 +20,14 @@ class CardComparator:
     
     
     @staticmethod
+    def __get_card_value_by_count(count_map: dict, count: int):
+        for k, v in count_map.items():
+            if v == count:
+                return k
+        return None
+    
+    
+    @staticmethod
     def get_pattern(cards: List[Card]):
         if not cards or len(cards) == 0:
             return Pattern.INVALID
@@ -51,3 +59,42 @@ class CardComparator:
                 return Pattern.FOUR_WITH_TWO_SINGLE
             return Pattern.INVALID
         return Pattern.INVALID
+    
+    
+    @staticmethod
+    def compare(pattern1: Pattern,
+                cards1: List[Card],
+                pattern2: Pattern,
+                cards2: List[Card]):
+        """ compare two card patterns 
+        
+        Args:
+            pattern1 (Pattern): new pattern
+            cards1 (List[Card]): new cards
+            pattern2 (Pattern): old pattern
+            cards2 (List[Card]): old cards
+        
+        Returns:
+            bool: True if cards1 can beat cards2, False otherwise
+        """
+        if pattern1 == Pattern.INVALID or pattern2 == Pattern.INVALID:
+            return False
+        if pattern1 != pattern2:
+            if pattern1 == Pattern.ROCKET:
+                return True
+            if pattern1 == Pattern.BOMB and pattern2 != Pattern.ROCKET:
+                return True
+            return False
+        else:
+            pattern = pattern1
+            if pattern == Pattern.SINGLE:
+                return cards1[0].value > cards2[0].value
+            count_map1 = CardComparator.__get_count_map(cards1)
+            count_map2 = CardComparator.__get_count_map(cards2)
+            if pattern == Pattern.PAIR:
+                return CardComparator.__get_card_value_by_count(count_map1, 2) > CardComparator.__get_card_value_by_count(count_map2, 2)
+            if pattern == Pattern.TRIPLE_WITH_SINGLE or pattern == Pattern.TRIPLE_WITH_PAIR:
+                return CardComparator.__get_card_value_by_count(count_map1, 3) > CardComparator.__get_card_value_by_count(count_map2, 3)
+            if pattern == Pattern.FOUR_WITH_TWO_SINGLE or pattern == Pattern.FOUR_WITH_TWO_PAIR or pattern == Pattern.BOMB:
+                return CardComparator.__get_card_value_by_count(count_map1, 4) > CardComparator.__get_card_value_by_count(count_map2, 4)
+            return False            
